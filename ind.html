@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Space Birthday for Prashant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f1a 100%);
+            animation: spaceBackground 12s infinite alternate;
+            height: 100vh;
+            perspective: 2000px;
+        }
+
+        @keyframes spaceBackground {
+            0% { background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f1a 100%); }
+            25% { background: radial-gradient(ellipse at center, #2d1b69 0%, #0f0f1a 100%); }
+            50% { background: radial-gradient(ellipse at center, #667eea 0%, #1a1a2e 100%); }
+            75% { background: radial-gradient(ellipse at center, #fa709a 0%, #2d1b69 100%); }
+            100% { background: radial-gradient(ellipse at center, #4facfe 0%, #1a1a2e 100%); }
+        }
+
+        .space-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            transform-style: preserve-3d;
+            animation: spaceRotate 30s linear infinite;
+        }
+
+        @keyframes spaceRotate {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #ffffff 0%, #e0e0e0 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: starTwinkle 3s infinite;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { 
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+        .planets {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: planetOrbit 20s linear infinite;
+        }
+
+        .planet1 {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #ff4757);
+            top: 20%;
+            left: 15%;
+            transform: translateZ(-300px);
+        }
+
+        .planet2 {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #74b9ff, #0984e3);
+            bottom: 25%;
+            right: 20%;
+            transform: translateZ(-400px);
+            animation-direction: reverse;
+        }
+
+        .planet3 {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #00b894, #00cec9);
+            top: 60%;
+            left: 70%;
+            transform: translateZ(-200px);
+        }
+
+        @keyframes planetOrbit {
+            0% { transform: rotateY(0deg) translateZ(-300px); }
+            100% { transform: rotateY(360deg) translateZ(-300px); }
+        }
+
+        .main-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 600px;
+            transform-style: preserve-3d;
+            z-index: 100;
+        }
+
+        .stage {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .stage.active {
+            opacity: 1;
+        }
+
+        .stage1 .lamps {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .lamp {
+            width: 50px;
+            height: 80px;
+            background: linear-gradient(45deg, #ffd700 0%, #ffed4e 100%);
+            border-radius: 25px 25px 10px 10px;
+            position: relative;
+            transform: translateY(-300px) rotateX(15deg);
+            animation: lampDrop 1.2s ease-out forwards;
+            box-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.8),
+                inset 0 -10px 20px rgba(255, 200, 0, 0.6);
+        }
+
+        .lamp::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 30px;
+            background: linear-gradient(45deg, #333, #666);
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .lamp::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background: radial-gradient(ellipse, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+
+        @keyframes lampDrop {
+            0% { transform: translateY(-300px) rotateX(15deg); }
+            70% { transform: translateY(10px) rotateX(15deg); }
+            100% { transform: translateY(0) rotateX(15deg); }
+        }
+
+        .lamp:nth-child(1) { animation-delay: 0.2s; }
+        .lamp:nth-child(2) { animation-delay: 0.4s; }
+        .lamp:nth-child(3) { animation-delay: 0.6s; }
+        .lamp:nth-child(4) { animation-delay: 0.8s; }
+        .lamp:nth-child(5) { animation-delay: 1.0s; }
+
+        .stage2 .banner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(10deg) scale(0);
+            animation: bannerAppear 1.5s ease-out forwards;
+            animation-delay: 0.8s;
+        }
+
+        .banner-3d {
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            color: white;
+            padding: 25px 50px;
+            border-radius: 15px;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            box-shadow: 
+                0 10px 30px rgba(139, 69, 19, 0.5),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.3),
+                0 0 50px rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .banner-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            border-radius: 15px;
+            transform: translateZ(2px);
+        }
+
+        @keyframes bannerAppear {
+            0% { transform: translate(-50%, -50%) rotateX(10deg) scale(0) rotateY(180deg); }
+            100% { transform: translate(-50%, -50%) rotateX(10deg) scale(1) rotateY(0deg); }
+        }
+
+        .stage3 .cake-3d {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(200px) rotateX(10deg);
+            animation: cakeRise 1.5s ease-out forwards;
+            animation-delay: 1s;
+            transform-style: preserve-3d;
+        }
+
+        .cake-base {
+            width: 150px;
+            height: 100px;
+            background: linear-gradient(45deg, #FFB6C1, #FF69B4);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 
+                0 15px 40px rgba(255, 105, 180, 0.4),
+                inset 0 -10px 20px rgba(255, 20, 147, 0.3);
+            transform-style: preserve-3d;
+        }
+
+        .cake-base::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            right: 15px;
+            height: 30px;
+            background: linear-gradient(45deg, #FF1493, #DC143C);
+            border-radius: 15px;
+            box-shadow: 
+                0 5px 15px rgba(220, 20, 60, 0.5),
+                inset 0 -5px 10px rgba(139, 0, 69, 0.4);
+        }
+
+        .cake-base::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            border-radius: 15px;
+            transform: translateZ(2px);
+        }
+
+        @keyframes cakeRise {
+            0% { transform: translateX(-50%) translateY(200px) rotateX(10deg); }
+            70% { transform: translateX(-50%) translateY(-20px) rotateX(10deg); }
+            100% { transform: translateX(-50%) translateY(0) rotateX(10deg); }
+        }
+
+        .candles-3d {
+            position: absolute;
+            top: -45px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 25px;
+            transform-style: preserve-3d;
+        }
+
+        .candle-3d {
+            width: 8px;
+            height: 30px;
+            background: linear-gradient(45deg, #FFFF00, #FFD700);
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 
+                0 5px 15px rgba(255, 215, 0, 0.4),
+                inset 0 -3px 6px rgba(255, 193, 7, 0.6);
+        }
+
+        .flame-3d {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 18px;
+            background: radial-gradient(ellipse, #FF4500 0%, #FF6347 50%, #FF8C00 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flameFlicker 0.8s infinite alternate;
+            box-shadow: 
+                0 0 20px rgba(255, 69, 0, 0.8),
+                0 0 40px rgba(255, 69, 0, 0.4);
+        }
+
+        @keyframes flameFlicker {
+            0% { 
+                transform: translateX(-50%) scale(1) rotate(-2deg);
+                opacity: 0.9;
+            }
+            100% { 
+                transform: translateX(-50%) scale(1.1) rotate(2deg);
+                opacity: 1;
+            }
+        }
+
+        .bird-3d {
+            position: absolute;
+            right: 50px;
+            bottom: 180px;
+            width: 50px;
+            height: 25px;
+            background: linear-gradient(45deg, #1E90FF, #00BFFF);
+            border-radius: 25px;
+            transform: translateX(400px) rotateY(-20deg);
+            animation: birdFly3D 2s ease-in-out forwards;
+            animation-delay: 2s;
+            box-shadow: 
+                0 10px 30px rgba(30, 144, 255, 0.4),
+                inset 0 -3px 8px rgba(0, 191, 255, 0.6);
+        }
+
+        .bird-3d::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 25px;
+            width: 0;
+            height: 0;
+            border-left: 15px solid #1E90FF;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            filter: drop-shadow(0 0 10px rgba(30, 144, 255, 0.5));
+        }
+
+        .bird-3d::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 15px;
+            width: 6px;
+            height: 6px;
+            background: #333;
+            border-radius: 50%;
+        }
+
+        @keyframes birdFly3D {
+            0% { transform: translateX(400px) rotateY(-20deg); }
+            30% { transform: translateX(100px) rotateY(-10deg) translateY(-20px); }
+            60% { transform: translateX(0) rotateY(0deg) translateY(-10px); }
+            100% { transform: translateX(50px) rotateY(10deg) translateY(0); }
+        }
+
+        .stage4 .balloons-3d {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .balloon-3d {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            transform: translateY(150vh) rotateX(10deg);
+            animation: balloonFloat3D 3s ease-out forwards;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.2),
+                inset -10px -10px 20px rgba(0, 0, 0, 0.1),
+                inset 10px 10px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .balloon-3d::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(45deg, #333, #666);
+            transform: translateX(-50%);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes balloonFloat3D {
+            0% { transform: translateY(150vh) rotateX(10deg); }
+            100% { transform: translateY(-100px) rotateX(10deg); }
+        }
+
+        .stage5 .arranged-balloons-3d {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(5deg);
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        .letter-balloon-3d {
+            width: 70px;
+            height: 90px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            transform: scale(0) rotateY(180deg);
+            animation: letterBalloon3D 0.8s ease-out forwards;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.3),
+                inset -15px -15px 30px rgba(0, 0, 0, 0.2),
+                inset 15px 15px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes letterBalloon3D {
+            0% { transform: scale(0) rotateY(180deg); }
+            70% { transform: scale(1.1) rotateY(0deg); }
+            100% { transform: scale(1) rotateY(0deg); }
+        }
+
+        .stage6 .hbd-text-3d {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(10deg) scale(0);
+            text-align: center;
+            color: white;
+            font-size: 4em;
+            font-weight: bold;
+            text-shadow: 
+                5px 5px 10px rgba(0,0,0,0.8),
+                0 0 30px rgba(255, 255, 255, 0.5);
+            animation: hbdText3D 1.5s ease-out forwards;
+            animation-delay: 1s;
+        }
+
+        @keyframes hbdText3D {
+            0% { 
+                transform: translate(-50%, -50%) rotateX(10deg) scale(0) rotateY(180deg);
+                opacity: 0;
+            }
+            100% { 
+                transform: translate(-50%, -50%) rotateX(10deg) scale(1) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        .stage7 .gift-box-3d {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) rotateX(10deg);
+            width: 120px;
+            height: 90px;
+            background: linear-gradient(45deg, #FF6347, #FF4500);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 
+                0 20px 60px rgba(255, 99, 71, 0.4),
+                inset 0 -10px 20px rgba(255, 69, 0, 0.6),
+                0 0 50px rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+        }
+
+        .gift-box-3d:hover {
+            transform: translateX(-50%) rotateX(10deg) scale(1.1) rotateY(10deg);
+            box-shadow: 
+                0 30px 80px rgba(255, 99, 71, 0.6),
+                inset 0 -10px 20px rgba(255, 69, 0, 0.8),
+                0 0 70px rgba(255, 255, 255, 0.4);
+        }
+
+        .gift-ribbon-3d {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            transform: translateX(-50%);
+            box-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.4),
+                inset 0 -5px 10px rgba(255, 165, 0, 0.6);
+        }
+
+        .gift-bow-3d {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 25px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            box-shadow: 
+                0 10px 30px rgba(255, 215, 0, 0.4),
+                inset 0 -5px 10px rgba(255, 165, 0, 0.6);
+        }
+
+        .gift-bow-3d::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(45deg, #FF4500, #FF6347);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.6);
+        }
+
+        .message-3d {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(10deg) scale(0);
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95));
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.3),
+                inset 0 -10px 20px rgba(0, 0, 0, 0.05),
+                0 0 100px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transition: all 0.8s ease;
+            z-index: 1000;
+            transform-style: preserve-3d;
+        }
+
+        .message-3d.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotateX(0deg) scale(1);
+        }
+
+        .message-3d h2 {
+            color: #FF6347;
+            margin-bottom: 25px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .message-3d p {
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .close-btn-3d {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: linear-gradient(45deg, #ff6b6b, #ff5252);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .close-btn-3d:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .start-btn {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .start-btn:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-container">
+        <div class="stars"></div>
+        <div class="planets">
+            <div class="planet planet1"></div>
+            <div class="planet planet2"></div>
+            <div class="planet planet3"></div>
+        </div>
+        
+        <div class="main-stage">
+            <!-- Stage 1: 3D Lamps -->
+            <div class="stage stage1 active">
+                <div class="lamps">
+                    <div class="lamp"></div>
+                    <div class="lamp"></div>
+                    <div class="lamp"></div>
+                    <div class="lamp"></div>
+                    <div class="lamp"></div>
+                </div>
+            </div>
+
+            <!-- Stage 2: 3D Banner -->
+            <div class="stage stage2">
+                <div class="banner">
+                    <div class="banner-3d">HAPPY BIRTHDAY</div>
+                </div>
+            </div>
+
+            <!-- Stage 3: 3D Cake -->
+            <div class="stage stage3">
+                <div class="cake-3d">
+                    <div class="cake-base">
+                        <div class="candles-3d">
+                            <div class="candle-3d"><div class="flame-3d"></div></div>
+                            <div class="candle-3d"><div class="flame-3d"></div></div>
+                            <div class="candle-3d"><div class="flame-3d"></div></div>
+                            <div class="candle-3d"><div class="flame-3d"></div></div>
+                            <div class="candle-3d"><div class="flame-3d"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bird-3d"></div>
+            </div>
+
+            <!-- Stage 4: 3D Floating Balloons -->
+            <div class="stage stage4">
+                <div class="balloons-3d"></div>
+            </div>
+
+            <!-- Stage 5: 3D Arranged Balloons -->
+            <div class="stage stage5">
+                <div class="arranged-balloons-3d">
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #FF6B6B, #FF8E53); animation-delay: 0s;">P</div>
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #4ECDC4, #44A08D); animation-delay: 0.15s;">R</div>
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #A8E6CF, #7FCDCD); animation-delay: 0.3s;">A</div>
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #FFD93D, #FF6B6B); animation-delay: 0.45s;">S</div>
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #6C5CE7, #A29BFE); animation-delay: 0.6s;">H</div>
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #FD79A8, #FDCB6E); animation-delay: 0.75s;">A</div>
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #00B894, #00CEC9); animation-delay: 0.9s;">N</div>
+                    <div class="letter-balloon-3d" style="background: linear-gradient(45deg, #E17055, #F39C12); animation-delay: 1.05s;">T</div>
+                </div>
+            </div>
+
+            <!-- Stage 6: 3D HBD Text -->
+            <div class="stage stage6">
+                <div class="hbd-text-3d">🎉 HBD PRASHANT! 🎉</div>
+            </div>
+
+            <!-- Stage 7: 3D Gift Box -->
+            <div class="stage stage7">
+                <div class="gift-box-3d" id="giftBox3D">
+                    <div class="gift-ribbon-3d"></div>
+                    <div class="gift-bow-3d"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="message-3d" id="message3D">
+        <button class="close-btn-3d" onclick="closeMessage()">×</button>
+        <h2>🎂 Happy Birthday Prashant! 🎂</h2>
+        <p>Have a wonderful birthday celebration! 🚀✨</p>
+        <p>May your journey around the sun be filled with stellar adventures, incredible discoveries, and dreams that reach beyond the stars! 🌟</p>
+        <p>Here's to another year of exploring the universe and making every moment shine bright! 🌌</p>
+        <p>Have an absolutely amazing birthday, space explorer! 🎊🛸</p>
+    </div>
+    <audio id="bgMusic" src="track.mp3" preload="auto" autoplay loop muted></audio>
+
+
+    <button class="start-btn" onclick="startAnimation()">🚀 Start Birthday Animation</button>
+
+    <script>
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            const numStars = 200;
+    
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+        
+                // Random position
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+        
+                // Random 3D depth
+                star.style.transform = `translateZ(${Math.random() * 1000 - 500}px)`;
+        
+                // Random animation delay
+                star.style.animationDelay = Math.random() * 3 + 's';
+        
+                // Random size variation
+                const size = Math.random() * 3 + 2;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+        
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function createFloatingBalloons() {
+            const balloonsContainer = document.querySelector('.balloons-3d');
+            const colors = [
+                'linear-gradient(45deg, #FF6B6B, #FF8E53)',
+                'linear-gradient(45deg, #4ECDC4, #44A08D)',
+                'linear-gradient(45deg, #A8E6CF, #7FCDCD)',
+                'linear-gradient(45deg, #FFD93D, #FF6B6B)',
+                'linear-gradient(45deg, #6C5CE7, #A29BFE)',
+                'linear-gradient(45deg, #FD79A8, #FDCB6E)',
+                'linear-gradient(45deg, #00B894, #00CEC9)',
+                'linear-gradient(45deg, #E17055, #F39C12)'
+            ];
+    
+            for (let i = 0; i < 12; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon-3d';
+        
+                // Random position
+                balloon.style.left = Math.random() * 80 + 10 + '%';
+                balloon.style.animationDelay = Math.random() * 2 + 's';
+        
+                // Random color
+                balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+                // Random 3D rotation
+                balloon.style.transform += ` rotateY(${Math.random() * 360}deg)`;
+        
+                balloonsContainer.appendChild(balloon);
+            }
+        }
+
+        let currentStage = 1;
+        let animationTimeout;
+
+        function startAnimation() {
+            // Hide start button
+            document.querySelector('.start-btn').style.display = 'none';
+            
+            document.addEventListener('click', function () {
+                const music = document.getElementById('bgMusic');
+                if (music) {
+                    music.muted = false;
+                    music.play().catch(() => {});
+                }
+            }, { once: true });
+                
+            // Initialize stars and balloons
+            createStars();
+            createFloatingBalloons();
+    
+            // Start the stage sequence
+            showStage(1);
+        }
+
+        function showStage(stageNumber) {
+            // Hide all stages
+            document.querySelectorAll('.stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+    
+            // Show current stage
+            const currentStageElement = document.querySelector(`.stage${stageNumber}`);
+            if (currentStageElement) {
+                currentStageElement.classList.add('active');
+            }
+    
+            // Set timing for each stage
+            let nextStageDelay;
+            switch (stageNumber) {
+                case 1: nextStageDelay = 3000; break; // Lamps
+                case 2: nextStageDelay = 4000; break; // Banner
+                case 3: nextStageDelay = 5000; break; // Cake
+                case 4: nextStageDelay = 4000; break; // Floating balloons
+                case 5: nextStageDelay = 6000; break; // Name balloons
+                case 6: nextStageDelay = 4000; break; // HBD text
+                case 7: nextStageDelay = 0; break; // Gift box (final stage)
+                default: return;
+            }
+    
+            // Schedule next stage
+            if (stageNumber < 7) {
+                animationTimeout = setTimeout(() => {
+                    showStage(stageNumber + 1);
+                }, nextStageDelay);
+            }
+        }
+
+        function openGiftBox() {
+            const message = document.getElementById('message3D');
+            message.classList.add('show');
+    
+            // Add sparkle effect
+            createSparkles();
+        }
+
+        function createSparkles() {
+            const sparkleContainer = document.createElement('div');
+            sparkleContainer.style.position = 'fixed';
+            sparkleContainer.style.top = '0';
+            sparkleContainer.style.left = '0';
+            sparkleContainer.style.width = '100%';
+            sparkleContainer.style.height = '100%';
+            sparkleContainer.style.pointerEvents = 'none';
+            sparkleContainer.style.zIndex = '999';
+    
+            for (let i = 0; i < 50; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.style.position = 'absolute';
+                sparkle.style.width = '6px';
+                sparkle.style.height = '6px';
+                sparkle.style.background = '#FFD700';
+                sparkle.style.borderRadius = '50%';
+                sparkle.style.boxShadow = '0 0 10px #FFD700';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.opacity = '0';
+                sparkle.style.animation = `sparkle 1.5s ease-out forwards`;
+                sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+        
+                sparkleContainer.appendChild(sparkle);
+            }
+    
+            document.body.appendChild(sparkleContainer);
+    
+            // Remove sparkles after animation
+            setTimeout(() => {
+                document.body.removeChild(sparkleContainer);
+            }, 2000);
+        }
+
+        function closeMessage() {
+            const message = document.getElementById('message3D');
+            message.classList.remove('show');
+        }
+
+        // Add sparkle keyframes
+        const sparkleKeyframes = `
+            @keyframes sparkle {
+                0% {
+                    opacity: 0;
+                    transform: scale(0) rotate(0deg);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1) rotate(180deg);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0) rotate(360deg);
+                }
+            }
+        `;
+
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = sparkleKeyframes;
+        document.head.appendChild(styleSheet);
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gift box click event
+            document.getElementById('giftBox3D').addEventListener('click', openGiftBox);
+    
+            // Add keyboard controls
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    if (document.querySelector('.start-btn').style.display !== 'none') {
+                        startAnimation();
+                    }
+                }
+                if (e.key === 'Escape') {
+                    closeMessage();
+                }
+            });
+    
+            // Add touch support for mobile
+            document.getElementById('giftBox3D').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                openGiftBox();
+            });
+        });
+
+        // Additional interactive effects
+        function addInteractiveEffects() {
+            // Add hover effects to balloons
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.classList.contains('letter-balloon-3d')) {
+                    e.target.style.transform += ' scale(1.1)';
+                }
+            });
+    
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.classList.contains('letter-balloon-3d')) {
+                    e.target.style.transform = e.target.style.transform.replace(' scale(1.1)', '');
+                }
+            });
+        }
+
+        // Initialize interactive effects
+        addInteractiveEffects();
+
+        // Auto-start animation after 3 seconds if not started manually
+        setTimeout(() => {
+            if (document.querySelector('.start-btn').style.display !== 'none') {
+                startAnimation();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
